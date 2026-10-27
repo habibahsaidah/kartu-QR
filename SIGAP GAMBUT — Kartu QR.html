@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SIGAP GAMBUT — Kartu QR</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+:root{
+  --page:#e8efe9; --ink:#0c3b2e; --muted:#4b6a5f;
+  --deep:#06382f; --teal:#0f6b5c; --amber:#f2b84b; --clay:#9a6420; --paper:#fffdf6; --mint:#7be0b4;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#07120f;color-scheme:dark}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--page);font-family:'Figtree',system-ui,sans-serif;display:flex;justify-content:center;padding:24px 14px}
+.card{position:relative;width:210mm;height:297mm;flex:none;border-radius:20px;overflow:hidden;color:#fff;isolation:isolate;
+  background:linear-gradient(180deg,#0c4f5c 0%,#1a7a73 22%,#e9b560 46%,#f3d79a 52%,#2b7a52 58%,#0d4a3a 74%,#06382f 100%);
+  box-shadow:0 24px 60px -20px rgba(6,56,47,.55)}
+.card::after{content:"";position:absolute;inset:12px;border:1px solid rgba(242,184,75,.45);border-radius:20px;pointer-events:none;z-index:5}
+.scene{position:absolute;inset:0;z-index:-1;width:100%;height:100%}
+.in{height:100%;padding:34px 36px 30px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.event{display:inline-flex;align-items:center;gap:10px;background:rgba(4,40,34,.78);border:1px solid rgba(123,224,180,.5);
+  padding:8px 18px;border-radius:99px;font-weight:600;font-size:.86rem;letter-spacing:.06em}
+.event i{width:9px;height:9px;border-radius:50%;background:var(--mint);box-shadow:0 0 10px var(--mint)}
+h1{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:4.1rem;line-height:.95;margin:22px 0 0;letter-spacing:-.02em;
+  text-shadow:0 3px 18px rgba(4,40,34,.55)}
+.bar{width:min(74%,420px);height:5px;border-radius:5px;background:var(--amber);margin:14px 0 18px}
+.sub{font-size:1.25rem;font-weight:600;line-height:1.45;max-width:30em;margin:0;text-shadow:0 2px 12px rgba(4,40,34,.7)}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:22px 0 0;padding:0;list-style:none}
+.chips li{padding:8px 16px;border-radius:99px;font-weight:600;font-size:.82rem;background:rgba(4,40,34,.82);border:1px solid rgba(123,224,180,.55);color:var(--mint)}
+.chips li:last-child{border-color:var(--amber);color:var(--amber)}
+.lead{margin:auto 0 0;padding-top:16px}
+.lead h2{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:1.7rem;margin:0;text-shadow:0 2px 14px rgba(4,40,34,.8)}
+.lead p{margin:6px 0 0;font-size:1rem;text-shadow:0 2px 10px rgba(4,40,34,.9)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:100%;margin-top:22px;text-align:left}
+.q{background:var(--paper);color:var(--ink);border-radius:22px;padding:16px 18px 14px;border-top:6px solid var(--teal);box-shadow:0 14px 34px -12px rgba(0,0,0,.5)}
+.q.b{border-top-color:var(--clay)}
+.q .tag{display:inline-block;font-size:.78rem;font-weight:600;padding:4px 12px;border-radius:99px;background:#dff3ea;color:var(--teal)}
+.q.b .tag{background:#f7e8cf;color:var(--clay)}
+.q h3{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:1.3rem;margin:10px 0 12px;line-height:1.15}
+.qr{display:block;background:#fff;border:1px solid #e3e8e2;border-radius:16px;padding:12px;aspect-ratio:1;width:100%;max-width:236px;margin:0 auto}
+.qr svg{display:block;width:100%;height:100%}
+.q .about{font-size:.8rem;color:var(--muted);margin:12px 0 4px;font-weight:600}
+.q .url{font-size:.8rem;color:var(--teal);word-break:break-all;text-decoration:none;font-weight:500}
+.q.b .url{color:var(--clay)}
+.q .url:hover,.q .url:focus-visible{text-decoration:underline;outline:none}
+.cta{margin:22px 0 0;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:1.25rem;color:var(--amber);letter-spacing:.04em}
+.name{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:2.1rem;margin:10px 0 2px}
+.aff{font-weight:600;margin:0;font-size:1.02rem}
+.tag2{margin:14px 0 0;opacity:.92;font-size:.95rem}
+.foot{margin:16px 0 0;font-size:.78rem;opacity:.85}
+@page{size:A4;margin:0}
+@media print{html,body{margin:0;padding:0;background:#fff}.card{zoom:1!important;box-shadow:none;border-radius:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<main class="card">
+  <svg class="scene" id="scene" viewBox="0 0 760 1200" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg>
+  <div class="in">
+    <div class="event"><i></i>PILMAKESMASPRES · NASIONAL 2026</div>
+    <h1>SIGAP GAMBUT</h1>
+    <div class="bar"></div>
+    <p class="sub">Sistem Integratif Mitigasi Risiko Kesehatan Akibat Asap Karhutla di Lahan Gambut</p>
+    <ul class="chips"><li>Deteksi dini</li><li>Manajemen hidrologi</li><li>Thermal barrier</li></ul>
+
+    <div class="lead"><h2>Jelajahi program</h2><p>Pindai kode QR untuk membuka akses digital program</p></div>
+
+    <div class="grid">
+      <section class="q">
+        <span class="tag">Web platform</span>
+        <h3>Dashboard Interaktif</h3>
+        <a class="qr" id="qr1" href="https://habibahsaidah.github.io/sigap-gambut-dashboard/" aria-label="QR Dashboard Interaktif"></a>
+        <p class="about">Peta risiko, SRI, bio-wick heat pipe</p>
+        <a class="url" href="https://habibahsaidah.github.io/sigap-gambut-dashboard/">habibahsaidah.github.io/sigap-gambut-dashboard</a>
+      </section>
+      <section class="q b">
+        <span class="tag">Dokumen utama</span>
+        <h3>Naskah Gagasan Kreatif</h3>
+        <a class="qr" id="qr2" href="https://bit.ly/GK-HabibahSaidah" aria-label="QR Naskah Gagasan Kreatif"></a>
+        <p class="about">Konsep, analisis, rencana implementasi</p>
+        <a class="url" href="https://bit.ly/GK-HabibahSaidah">bit.ly/GK-HabibahSaidah</a>
+      </section>
+    </div>
+
+    <p class="cta">PINDAI · TELUSURI · LINDUNGI</p>
+    <p class="name">Habibah Sai’dah</p>
+    <p class="aff">Kesehatan Masyarakat | Universitas Lambung Mangkurat</p>
+    <p class="tag2">Dari deteksi dini menuju perlindungan kesehatan masyarakat.</p>
+    <p class="foot">Silakan pindai kode yang sesuai untuk melihat dashboard atau membaca naskah lengkap.</p>
+  </div>
+</main>
+<script>
+function mk(id,url){
+  try{var q=qrcode(0,'M');q.addData(url);q.make();document.getElementById(id).innerHTML=q.createSvgTag({cellSize:4,margin:0,scalable:true});}
+  catch(e){document.getElementById(id).textContent=url;}
+}
+mk('qr1','https://habibahsaidah.github.io/sigap-gambut-dashboard/');
+mk('qr2','https://bit.ly/GK-HabibahSaidah');
+// skala kartu A4 agar muat di layar
+function fit(){var c=document.querySelector('.card');c.style.zoom=1;var z=Math.min(1,(innerWidth-28)/c.offsetWidth);c.style.zoom=z;}
+fit();addEventListener('resize',fit);
+// pemandangan: matahari terbenam, pepohonan gambut, tanah
+(function(){
+  var s=document.getElementById('scene'),h='';
+  h+='<defs><radialGradient id="g" cx="50%" cy="46%" r="40%"><stop offset="0" stop-color="#fff2c4" stop-opacity=".95"/><stop offset="1" stop-color="#f2b84b" stop-opacity="0"/></radialGradient></defs>';
+  h+='<rect y="360" width="760" height="360" fill="url(#g)"/>';
+  var seed=7;function r(){seed=(seed*9301+49297)%233280;return seed/233280}
+  [[560,'#3f8a5a',.55],[600,'#2a7048',.8],[650,'#17533c',1.1]].forEach(function(l){
+    for(var x=-20;x<780;x+=26+r()*22){
+      var t=(34+r()*50)*l[2]*1.5,w=(10+r()*14)*l[2];
+      h+='<rect x="'+(x-1.5)+'" y="'+(l[0]-t)+'" width="3" height="'+t+'" fill="'+l[1]+'"/>';
+      h+='<ellipse cx="'+x+'" cy="'+(l[0]-t)+'" rx="'+(w*1.5)+'" ry="'+w+'" fill="'+l[1]+'"/>';
+    }
+    h+='<rect y="'+l[0]+'" width="760" height="40" fill="'+l[1]+'"/>';
+  });
+  h+='<path d="M0 1120 Q200 1060 380 1100 T760 1070 V1200 H0Z" fill="#5a3a1d" opacity=".85"/>';
+  h+='<path d="M0 1150 Q220 1100 420 1140 T760 1120 V1200 H0Z" fill="#3b2412" opacity=".9"/>';
+  s.innerHTML=h;
+})();
+</script>
+</body>
+</html>
